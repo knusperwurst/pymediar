@@ -7,8 +7,9 @@ class Mediafile(Base):
 
     id = Column(Integer, primary_key=True)
     path = Column(String, nullable=False)
-    abs_path = Column(String, nullable=False)
     size = Column(Integer, nullable=False)
+    filename = Column(String, nullable=False)
+    file_ext = Column(String, nullable=False)
 
     def __repr__(self):
-        return f"<{self.id}, {self.abs_path}, {self.size}>"
+        return f"<{self.id}, {self.abs_path}, {self.size}, {self.file_ext}>"
