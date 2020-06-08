@@ -2,7 +2,8 @@ import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from db import get_session
-from db.models.mediafile import Mediafile
+from db.models import Mediafile
+from fileworker.filechecker import check
 
 
 class FileObserver:
@@ -26,7 +27,9 @@ class Handler(FileSystemEventHandler):
 
     def on_created(self, event):
         dbsess = get_session()
-        with dbsess:
+        root = f"{os.path.sep}".join(event.src_path.split(os.path.sep)[:-1])
+        file = event.src_path.split(os.path.sep).pop()
+        if check(file):
             mf = Mediafile()
             mf.path = root
             mf.filename = file
@@ -34,15 +37,19 @@ class Handler(FileSystemEventHandler):
             mf.size = os.path.getsize(os.path.join(root, file))
             dbsess.add(mf)
             dbsess.commit()
+            dbsess.close()
 
     def on_deleted(self, event):
-        print(event.is_directory)
-        print(event.src_path)
+        dbsess = get_session()
+        root = f"{os.path.sep}".join(event.src_path.split(os.path.sep)[:-1])
+        file = event.src_path.split(os.path.sep).pop()
 
     def on_modified(self, event):
-        print(event.is_directory)
-        print(event.src_path)
+        dbsess = get_session()
+        root = f"{os.path.sep}".join(event.src_path.split(os.path.sep)[:-1])
+        file = event.src_path.split(os.path.sep).pop()
 
     def on_moved(self, event):
-        print(event.is_directory)
-        print(event.src_path)
+        dbsess = get_session()
+        root = f"{os.path.sep}".join(event.src_path.split(os.path.sep)[:-1])
+        file = event.src_path.split(os.path.sep).pop()

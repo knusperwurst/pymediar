@@ -1,4 +1,4 @@
-from  flask import Flask
+from flask import Flask
 
 from fileworker import filescanner
 from db import create_db

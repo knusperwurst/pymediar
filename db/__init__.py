@@ -4,12 +4,11 @@ from sqlalchemy.orm import sessionmaker
 
 engine = create_engine("sqlite:///sqlite.db", echo=True)
 Base = declarative_base()
-Session = sessionmaker()
-Session.configure(bind=engine)
 
 
 def get_session():
-    return Session()
+    session = sessionmaker(bind=engine)
+    return session()
 
 
 def create_db():

@@ -1,7 +1,7 @@
 import os
 from fileworker import filechecker
 from db import get_session
-from db.models.mediafile import Mediafile
+from db.models import Mediafile
 
 
 class Scanner:
